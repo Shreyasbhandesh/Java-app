@@ -10,7 +10,7 @@ pipeline {
     }
 
     environment {
-        SONARQUBE_URL = 'http://sonarqube:9000'
+        SONARQUBE_URL = 'http://13.235.51.64:30900/'
         SONARQUBE_TOKEN = credentials('Sonar-token-id')  // Replace with actual ID from Jenkins credentials
         NEXUS_REPO_URL = 'http://13.235.51.64:32000' // Cleaned URL — remove "#browse"
         MAVEN_CREDENTIALS_ID = 'maven-settings' // Jenkins credentials ID
