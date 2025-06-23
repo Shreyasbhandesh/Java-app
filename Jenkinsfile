@@ -7,8 +7,8 @@ pipeline {
 
     environment {
         SONARQUBE_URL = 'http://sonarqube:9000'
-        SONARQUBE_TOKEN = credentials('sonar-token')
-        NEXUS_REPO_URL = 'http://nexus:8081/repository/maven-releases/'
+        SONARQUBE_TOKEN = credentials('Sonar-token-id')
+        NEXUS_REPO_URL = 'http://13.235.51.64:32000/#browse/browse:maven-releases/'
         MAVEN_CREDENTIALS_ID = 'nexus-credentials'
     }
 
