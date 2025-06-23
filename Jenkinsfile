@@ -2,18 +2,18 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven'  // Make sure this matches what you've set up in Jenkins > Global Tool Configuration
+        maven 'Maven' // Must match your Global Tool Configuration
     }
 
     options {
-        skipDefaultCheckout(true) // Prevents Jenkins from doing its default Git checkout
+        skipDefaultCheckout(true)
     }
 
     environment {
-        SONARQUBE_URL = 'http://13.235.51.64:30900/'
-        SONARQUBE_TOKEN = credentials('Sonar-token-id')  // Replace with actual ID from Jenkins credentials
-        NEXUS_REPO_URL = 'http://13.235.51.64:32000' // Cleaned URL — remove "#browse"
-        MAVEN_CREDENTIALS_ID = 'maven-settings' // Jenkins credentials ID
+        SONARQUBE_URL = 'http://13.235.51.64:30900'
+        SONARQUBE_TOKEN = credentials('Sonar-token-id')
+        NEXUS_REPO_URL = 'http://13.235.51.64:32000/repository/maven-releases/'
+        MAVEN_CREDENTIALS_ID = 'maven-settings'
     }
 
     stages {
@@ -25,12 +25,12 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQubeServer') { // Name must match Jenkins > SonarQube server config
+                withSonarQubeEnv('SonarQubeServer') {
                     sh """
                         mvn sonar:sonar \
                             -Dsonar.projectKey=Java-app \
-                            -Dsonar.host.url=$SONARQUBE_URL \
-                            -Dsonar.login=$SONARQUBE_TOKEN
+                            -Dsonar.host.url=${SONARQUBE_URL} \
+                            -Dsonar.login=${SONARQUBE_TOKEN}
                     """
                 }
             }
@@ -38,9 +38,8 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                wait 20
-             //   timeout(time: 20, unit: 'SECONDS') {
-               //     waitForQualityGate abortPipeline: true
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
@@ -56,6 +55,8 @@ pipeline {
                 script {
                     def tag = "v1.0.${env.BUILD_NUMBER}"
                     sh """
+                        git config user.email "jenkins@example.com"
+                        git config user.name "Jenkins"
                         git tag $tag
                         git push origin $tag
                     """
@@ -67,7 +68,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'maven-settings', variable: 'SETTINGS_XML')]) {
                     sh """
-                        mvn deploy -DaltDeploymentRepository=nexus::default::$NEXUS_REPO_URL \
+                        mvn deploy -DaltDeploymentRepository=nexus::default::${NEXUS_REPO_URL} \
                                    --settings $SETTINGS_XML
                     """
                 }
