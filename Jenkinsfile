@@ -1,11 +1,15 @@
 pipeline {
     agent any
 
+    tools {
+        git 'Default'  // <- Match this name with what you configured in Jenkins
+    }
+
     environment {
         SONARQUBE_URL = 'http://sonarqube:9000'
-        SONARQUBE_TOKEN = credentials('sonar-token')       // Jenkins secret
+        SONARQUBE_TOKEN = credentials('sonar-token')
         NEXUS_REPO_URL = 'http://nexus:8081/repository/maven-releases/'
-        MAVEN_CREDENTIALS_ID = 'nexus-credentials'         // Jenkins secret
+        MAVEN_CREDENTIALS_ID = 'nexus-credentials'
     }
 
     stages {
@@ -17,7 +21,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQubeServer') { // Jenkins > Manage > SonarQube servers
+                withSonarQubeEnv('SonarQubeServer') {
                     sh """
                     mvn sonar:sonar \
                         -Dsonar.projectKey=your-project \
@@ -39,8 +43,8 @@ pipeline {
                 script {
                     def tag = "v1.0.${env.BUILD_NUMBER}"
                     sh """
-                        // git config user.email "jenkins@example.com"
-                        // git config user.name "Jenkins"
+                        git config user.email "jenkins@example.com"
+                        git config user.name "Jenkins"
                         git tag $tag
                         git push origin $tag
                     """
