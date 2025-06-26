@@ -36,13 +36,13 @@ pipeline {
             }
         }
 
-       // stage('Quality Gate') {
+        stage('Quality Gate') {
             steps {
                 timeout(time: 6, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
-        //}
+        }
 
         stage('Build Project') {
             steps {
