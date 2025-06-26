@@ -50,18 +50,19 @@ pipeline {
             }
         }
 
-        stage('Tag Build') {
-            steps {
-                script {
-                    def tag = "v1.0.${env.BUILD_NUMBER}"
-                    sh """
-                       
-                        git tag $tag
-                        git push origin $tag
-                    """
-                }
-            }
-        }
+        stage('Set Version') {
+          steps {
+            script {
+               env.VERSION = "1.0.${env.BUILD_NUMBER}"
+                  }
+
+             sh """
+              mvn versions:set -DnewVersion=${VERSION}
+              mvn versions:commit
+               """
+               }
+           }
+
 
         stage('Deploy to Nexus') {
             steps {
