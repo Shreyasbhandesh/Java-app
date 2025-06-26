@@ -98,7 +98,7 @@ pipeline {
                    
                     sh """
                         docker tag simple-java-app:${VERSION} ${NEXUS_HOST}/simple-java-app:${VERSION}
-                        docker push ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
+                        docker push ${NEXUS_HOST}/simple-java-app:${VERSION}
                     """
                 
             }
