@@ -94,12 +94,12 @@ pipeline {
 
         stage('Tag & Push Docker Image to Nexus') {
             steps {
-                withDockerRegistry(credentialsId: 'nexus-docker-creds', url: "http://${NEXUS_DOCKER_REPO}") {
+                   
                     sh """
                         docker tag simple-java-app:${VERSION} ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
                         docker push ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
                     """
-                }
+                
             }
         }
     }
