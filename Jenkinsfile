@@ -76,7 +76,7 @@ pipeline {
 
         stage('Download Artifact from Nexus') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
                     sh """
                         wget --user=$NEXUS_USER --password=$NEXUS_PASS \
                         ${NEXUS_REPO_URL}com/example/simple-java-app/${VERSION}/simple-java-app-${VERSION}.jar \
