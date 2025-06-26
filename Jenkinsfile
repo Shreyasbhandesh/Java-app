@@ -15,6 +15,7 @@ pipeline {
         NEXUS_REPO_URL = 'http://15.206.79.47:32000/repository/maven-releases/'
         NEXUS_DOCKER_REPO = "<NEXUS-HOST>:5000"
         MAVEN_CREDENTIALS_ID = 'maven-settings'
+        NEXUS_HOST = '15.206.79.47:32000'
     }
 
     stages {
@@ -96,7 +97,7 @@ pipeline {
             steps {
                    
                     sh """
-                        docker tag simple-java-app:${VERSION} ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
+                        docker tag simple-java-app:${VERSION} ${NEXUS_HOST}/simple-java-app:${VERSION}
                         docker push ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
                     """
                 
