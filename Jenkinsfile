@@ -38,7 +38,7 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 6, unit: 'MINUTES') {
+                timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
@@ -55,8 +55,7 @@ pipeline {
                 script {
                     def tag = "v1.0.${env.BUILD_NUMBER}"
                     sh """
-                        git config user.email "jenkins@example.com"
-                        git config user.name "Jenkins"
+                       
                         git tag $tag
                         git push origin $tag
                     """
