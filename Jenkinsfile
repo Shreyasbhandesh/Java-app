@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven' // Must match your Global Tool Configuration
+        maven 'Maven'
     }
 
     options {
@@ -52,18 +52,17 @@ pipeline {
         }
 
         stage('Set Version') {
-          steps {
-            script {
-               env.VERSION = "1.0.${env.BUILD_NUMBER}"
-                  }
+            steps {
+                script {
+                    env.VERSION = "1.0.${env.BUILD_NUMBER}"
+                }
 
-             sh """
-              mvn versions:set -DnewVersion=${VERSION}
-              mvn versions:commit
-               """
-               }
-           }
-
+                sh """
+                    mvn versions:set -DnewVersion=${VERSION}
+                    mvn versions:commit
+                """
+            }
+        }
 
         stage('Deploy to Nexus') {
             steps {
@@ -74,13 +73,13 @@ pipeline {
                 }
             }
         }
-        stages {
+
         stage('Download Artifact from Nexus') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
                     sh """
                         wget --user=$NEXUS_USER --password=$NEXUS_PASS \
-                        $NEXUS_REPO_URL/com/example/simple-java-app/$VERSION/simple-java-app-$VERSION.jar \
+                        ${NEXUS_REPO_URL}com/example/simple-java-app/${VERSION}/simple-java-app-${VERSION}.jar \
                         -O app.jar
                     """
                 }
@@ -92,17 +91,17 @@ pipeline {
                 sh "docker build -t simple-java-app:${VERSION} ."
             }
         }
-         stage('Tag & Push Docker Image to Nexus') {
+
+        stage('Tag & Push Docker Image to Nexus') {
             steps {
-                withDockerRegistry(credentialsId: 'nexus-docker-creds', url: "http://$NEXUS_DOCKER_REPO") {
+                withDockerRegistry(credentialsId: 'nexus-docker-creds', url: "http://${NEXUS_DOCKER_REPO}") {
                     sh """
-                        docker tag simple-java-app:${VERSION} $NEXUS_DOCKER_REPO/simple-java-app:${VERSION}
-                        docker push $NEXUS_DOCKER_REPO/simple-java-app:${VERSION}
+                        docker tag simple-java-app:${VERSION} ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
+                        docker push ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
                     """
                 }
             }
         }
-
     }
 
     post {
@@ -114,4 +113,3 @@ pipeline {
         }
     }
 }
-
