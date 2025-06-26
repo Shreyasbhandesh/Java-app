@@ -12,7 +12,7 @@ pipeline {
     environment {
         SONARQUBE_URL = 'http://3.109.144.111:30900/'
         SONARQUBE_TOKEN = credentials('Sonar-token-id')
-        NEXUS_REPO_URL = 'http://15.206.79.47:32000/'
+        NEXUS_REPO_URL = 'http://15.206.79.47:32000/repository/maven-releases/'
         MAVEN_CREDENTIALS_ID = 'maven-settings'
     }
 
@@ -68,8 +68,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'maven-settings', variable: 'SETTINGS_XML')]) {
                     sh """
-                        mvn deploy -DaltDeploymentRepository=nexus::default::${NEXUS_REPO_URL} \
-                                   --settings $SETTINGS_XML
+                        mvn deploy -DaltDeploymentRepository=nexus::default::${NEXUS_REPO_URL} --settings $SETTINGS_XML
                     """
                 }
             }
