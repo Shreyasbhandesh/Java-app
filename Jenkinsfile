@@ -12,7 +12,7 @@ pipeline {
     environment {
         SONARQUBE_URL = 'http://3.109.144.111:30900/'
         SONARQUBE_TOKEN = credentials('Sonar-token-id')
-        NEXUS_REPO_URL = 'http://13.235.51.64:32000/repository/maven-releases/'
+        NEXUS_REPO_URL = 'http://15.206.79.47:32000/repository/maven-releases/'
         MAVEN_CREDENTIALS_ID = 'maven-settings'
     }
 
