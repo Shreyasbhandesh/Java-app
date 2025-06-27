@@ -13,7 +13,7 @@ pipeline {
         SONARQUBE_URL = 'http://3.109.144.111:30900/'
         SONARQUBE_TOKEN = credentials('Sonar-token-id')
         NEXUS_REPO_URL = 'http://15.206.79.47:32000/repository/maven-releases/'
-        NEXUS_DOCKER_REPO = "<NEXUS-HOST>:5000/repository/docker-hosted"
+        NEXUS_DOCKER_REPO = "<NEXUS-HOST>:5000"
         MAVEN_CREDENTIALS_ID = 'maven-settings'
         NEXUS_HOST = '15.206.79.47:32000'
     }
@@ -95,10 +95,7 @@ pipeline {
 
         stage('Push Docker Image to Nexus') {
             steps {
-                   
-                    sh """
-                        docker push ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
-                    """
+                   sh "docker push ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}"
                 
             }
         }
