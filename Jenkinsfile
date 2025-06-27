@@ -89,7 +89,9 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION} ."
+                sh """
+                    docker build -t ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION} .
+                  """
             }
         }
 
