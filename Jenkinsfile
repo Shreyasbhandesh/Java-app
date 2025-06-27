@@ -13,7 +13,7 @@ pipeline {
         SONARQUBE_URL = 'http://3.109.144.111:30900/'
         SONARQUBE_TOKEN = credentials('Sonar-token-id')
         NEXUS_REPO_URL = 'http://15.206.79.47:32000/repository/maven-releases/'
-        NEXUS_DOCKER_REPO = "<NEXUS-HOST>:5000"
+        NEXUS_DOCKER_REPO = "<NEXUS-HOST>:5000/repository/docker-hosted"
         MAVEN_CREDENTIALS_ID = 'maven-settings'
         NEXUS_HOST = '15.206.79.47:32000'
     }
@@ -89,7 +89,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t simple-java-app:${VERSION} ."
+                sh "docker build -t simple-java-app:${VERSION} "
             }
         }
 
@@ -97,8 +97,8 @@ pipeline {
             steps {
                    
                     sh """
-                        docker tag simple-java-app:${VERSION} ${NEXUS_HOST}/simple-java-app:${VERSION}
-                        docker push ${NEXUS_HOST}/simple-java-app:${VERSION}
+                        // docker tag simple-java-app:${VERSION} ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
+                        docker push ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}
                     """
                 
             }
