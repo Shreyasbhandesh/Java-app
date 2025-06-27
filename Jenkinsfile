@@ -13,9 +13,9 @@ pipeline {
         SONARQUBE_URL = 'http://3.109.144.111:30900/'
         SONARQUBE_TOKEN = credentials('Sonar-token-id')
         NEXUS_REPO_URL = 'http://15.206.79.47:32000/repository/maven-releases/'
-        NEXUS_DOCKER_REPO = "35.154.175.176:3200"
+        NEXUS_DOCKER_REPO = "<NEXUS_HOST>:3200"
         MAVEN_CREDENTIALS_ID = 'maven-settings'
-        NEXUS_HOST = '15.206.79.47:32000'
+        NEXUS_HOST = '15.206.79.47'
     }
 
     stages {
