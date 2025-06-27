@@ -97,7 +97,7 @@ pipeline {
 
         stage('Push Docker Image to Nexus') {
             steps {
-                   sh "docker push ${NEXUS_DOCKER_REPO}/simple-java-app:${VERSION}"
+                   sh "docker push ${NEXUS_DOCKER_REPO}/simple-java-app/simple-java-app:${VERSION}"
                 
             }
         }
