@@ -16,6 +16,8 @@ pipeline {
         NEXUS_DOCKER_REPO = "15.206.79.47:32001"
         MAVEN_CREDENTIALS_ID = 'maven-settings'
         NEXUS_HOST = '15.206.79.47'
+        JAVA_HOME = '/usr/lib/jvm/java-21-amazon-corretto/'
+        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
 
     stages {
