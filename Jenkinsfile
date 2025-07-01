@@ -15,6 +15,7 @@ pipeline {
         NEXUS_REPO_URL = 'http://15.206.79.47:32000/repository/maven-releases/'
         NEXUS_DOCKER_REPO = "15.206.79.47:32001"
         MAVEN_CREDENTIALS_ID = 'maven-settings'
+        NEXUS_CREDENTIAL_ID = 'nexus-credentials'
         NEXUS_HOST = '15.206.79.47'
         JAVA_HOME = '/usr/lib/jvm/java-21-amazon-corretto/'
         PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
@@ -79,7 +80,7 @@ pipeline {
 
         stage('Download Artifact from Nexus') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                withCredentials([usernamePassword(credentialsId: NEXUS_CREDENTIAL_ID, usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
                     sh """
                         wget --user=$NEXUS_USER --password=$NEXUS_PASS \
                         ${NEXUS_REPO_URL}com/example/simple-java-app/${VERSION}/simple-java-app-${VERSION}.jar \
